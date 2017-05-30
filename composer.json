@@ -1,0 +1,11 @@
+{
+  "name"  : "kings/interface-worker",
+  "keywords": ["distributed"],
+  "homepage": "http://www.limx.cn",
+  "license" : "MIT",
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {"InterfaceWorker\\":  "./"}
+  }
+}
