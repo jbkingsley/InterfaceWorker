@@ -57,7 +57,7 @@ class CacheByRedis implements Cache {
         $dbIndex = isset($config['db']) ? intval($config['db']) : 0;
         $this->redis->select($dbIndex);
 
-        $this->prefix = isset($config['prefix']) ? $config['prefix'] : 'phalapi:';
+        $this->prefix = isset($config['prefix']) ? $config['prefix'] : '';
     }
 
     /**

@@ -18,7 +18,7 @@ namespace InterfaceWorker\Configs;
 
 use InterfaceWorker\Config;
 
-class ConfigByFile implements Config {
+class File implements Config {
 
 	/**
 	 * @var string $path 配置文件的目录位置

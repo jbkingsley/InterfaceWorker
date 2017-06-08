@@ -5,11 +5,10 @@
  * 将创建与使用分离，简化客户调用，负责控制器复杂的创建过程
  *
 ```
- *      //根据请求(?service=XXX.XXX)生成对应的接口服务，并进行初始化
+ *      根据请求(?service=XXX.XXX)生成对应的接口服务，并进行初始化
  *      $api = ApiFactory::generateService();
 ```
  * @package     InterfaceWorker\Api
- * @author      kings
  */
 namespace InterfaceWorker;
 
@@ -27,7 +26,7 @@ class ApiFactory {
      * - 2、 控制器文件是否存在，并且控制器是否存在
      * - 3、 方法是否可调用
      * - 4、 控制器是否初始化成功
-     *
+     * @param $eventSpace;
      * @param boolean $isInitialize 是否在创建后进行初始化
      * @return Api 自定义的控制器
      *
@@ -35,7 +34,7 @@ class ApiFactory {
      * @throws BadRequestException 非法请求下返回400
      * @throws ServerInternalException
      */
-    static function generateService($isInitialize = TRUE) {
+    static function generateService($eventSpace, $isInitialize = TRUE) {
         $service = Functions::DI()->request->get('service', 'Default.Index');
 
         $serviceArr = explode('.', $service);
@@ -47,8 +46,9 @@ class ApiFactory {
         }
 
         list ($apiClassName, $action) = $serviceArr;
-        $apiClassName = 'Events\\' . ucfirst($apiClassName);
+        $apiClassName = $eventSpace . ucfirst($apiClassName);
         // $action = lcfirst($action);
+
 
         if (!class_exists($apiClassName)) {
             throw new BadRequestException(

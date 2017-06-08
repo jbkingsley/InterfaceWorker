@@ -1,6 +1,6 @@
 <?php
 /**
- * PhalApi 应用类
+ * InterfaceWorker 应用类
  *
  * - 实现远程服务的响应、调用等操作
  *
@@ -12,7 +12,6 @@
 ```
  *
  * @package     InterfaceWorker\Response
- * @author      kings
  */
 namespace InterfaceWorker;
 
@@ -21,12 +20,18 @@ use Exception;
 
 class Interfaces {
 
+    private $eventSpace;
+
     public function __construct() {
 
     }
 
     public function setCurrentClientId($clientId){
         Functions::DI()->currentClientId = $clientId;
+    }
+
+    public function setEventSpace($nameSpace){
+        $this->eventSpace = $nameSpace;
     }
 
     /**
@@ -51,7 +56,7 @@ class Interfaces {
 
         try {
             // 接口响应
-            $api = ApiFactory::generateService();
+            $api = ApiFactory::generateService($this->eventSpace, $service);
             list($apiClassName, $action) = explode('.', $service);
             $data = call_user_func(array($api, $action));
 

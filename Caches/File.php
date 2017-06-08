@@ -11,7 +11,7 @@ namespace InterfaceWorker\Caches;
 use InterfaceWorker\Cache;
 use InterfaceWorker\Exceptions\ServerInternalException;
 
-class CacheByFile implements Cache {
+class File implements Cache {
 
     protected $folder;
 
@@ -26,7 +26,7 @@ class CacheByFile implements Cache {
             mkdir($cacheFolder, 0777, TRUE);
         }
 
-        $this->prefix = isset($config['prefix']) ? $config['prefix'] : 'phapapi';
+        $this->prefix = isset($config['prefix']) ? $config['prefix'] : '';
     }
 
     public function set($key, $value, $expire = 600) {

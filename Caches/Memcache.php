@@ -11,10 +11,10 @@
  */
 namespace InterfaceWorker\Caches;
 
-use Memcache;
 use InterfaceWorker\Cache;
+use SlightPHP\Cache_MemcacheObject;
 
-class CacheByMemcache implements Cache {
+class Memcache implements Cache {
 
     protected $memcache = null;
 
@@ -28,16 +28,16 @@ class CacheByMemcache implements Cache {
     public function __construct($config) {
         $this->memcache = $this->createMemcache();
         $this->memcache->addServer($config['host'], $config['port']);
-        $this->prefix = isset($config['prefix']) ? $config['prefix'] : 'phalapi_';
+        $this->prefix = isset($config['prefix']) ? $config['prefix'] : '';
     }
 
     public function set($key, $value, $expire = 600) {
-        $this->memcache->set($this->formatKey($key), @serialize($value), 0, $expire);
+        $this->memcache->set($this->formatKey($key), new Cache_MemcacheObject($value), 0, $expire);
     }
 
     public function get($key) {
-        $value = $this->memcache->get($this->formatKey($key));
-        return $value !== FALSE ? @unserialize($value) : NULL;
+        $value = $this->memcache->get($this->formatKey($key)); var_dump($value);
+        return $value !== FALSE and $value instanceof Cache_MemcacheObject ? $value->v : NULL;
     }
 
     public function delete($key) {
@@ -49,7 +49,7 @@ class CacheByMemcache implements Cache {
 	 * @return Memcache
      */
     protected function createMemcache() {
-        return new Memcache();
+        return new \Memcache();
     }
 
     protected function formatKey($key) {

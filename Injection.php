@@ -36,11 +36,13 @@ use InterfaceWorker\Exceptions\ServerInternalException;
  *       };
 ```
  *
- * @property    Request\CoapRequest        $request    请求
- * @property    Response\CoapResponse      $response   响应
+ * @property    Request        $request    请求
+ * @property    Response       $response   响应
  * @property    string                                     $currentClientId    当前客户端的连接ID
  * @property    array                                      $clientsUid         所有的客户端连接ID
  * @property    array                                      $readCache          数据读取缓存
+ * @property    Cache                      $cache      cache
+ * @property    Config                     $config     config
  *
  * @package     InterfaceWorker\Injection
  * @author      Kings
