@@ -15,7 +15,7 @@ class Memcached extends \InterfaceWorker\Caches\Memcache {
      * 注意参数的微妙区别
      */
     public function set($key, $value, $expire = 600) {
-        $this->memcache->set($this->formatKey($key), new Cache_MemcacheObject($value), $expire);
+        $this->memcache->set($this->formatKey($key), new $this->object($value), $expire);
     }
 
     /**

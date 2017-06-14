@@ -12,13 +12,13 @@
 namespace InterfaceWorker\Caches;
 
 use InterfaceWorker\Cache;
-use SlightPHP\Cache_MemcacheObject;
 
 class Memcache implements Cache {
 
     protected $memcache = null;
 
     protected $prefix;
+    protected $object;
 
     /**
      * @param string $config['host'] Memcache域名
@@ -29,15 +29,22 @@ class Memcache implements Cache {
         $this->memcache = $this->createMemcache();
         $this->memcache->addServer($config['host'], $config['port']);
         $this->prefix = isset($config['prefix']) ? $config['prefix'] : '';
+        $this->object = isset($config['object']) ? $config['object'] : '';
     }
 
     public function set($key, $value, $expire = 600) {
-        $this->memcache->set($this->formatKey($key), new Cache_MemcacheObject($value), 0, $expire);
+        if(class_exists($this->object)){
+            $value = new $this->object($value);
+        }
+        $this->memcache->set($this->formatKey($key), $value, 0, $expire);
     }
 
     public function get($key) {
-        $value = $this->memcache->get($this->formatKey($key)); var_dump($value);
-        return $value !== FALSE and $value instanceof Cache_MemcacheObject ? $value->v : NULL;
+        $value = $this->memcache->get($this->formatKey($key));
+        if(class_exists($this->object)){
+            return ($value !== FALSE and $value instanceof $this->object) ? call_user_func(array($this->object, 'getValue'), $value) : NULL;
+        }
+        return $value !== FALSE ? $value : NULL;
     }
 
     public function delete($key) {
