@@ -41,6 +41,7 @@ use InterfaceWorker\Exceptions\ServerInternalException;
  * @property    string                                     $currentClientId    当前客户端的连接ID
  * @property    array                                      $clientsUid         所有的客户端连接ID
  * @property    array                                      $readCache          数据读取缓存
+ * @property    object                                     $mysql          数据库实例
  * @property    Cache                      $cache      cache
  * @property    Config                     $config     config
  *

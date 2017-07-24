@@ -22,7 +22,7 @@ abstract class Response {
     /**
      * @var string $error_code 错误码
      */
-    protected $error_code = '';
+    protected $error_code = 0;
 
     /**
      * @var string $error_msg 错误消息

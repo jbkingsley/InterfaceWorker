@@ -26,12 +26,20 @@ class WebSocketResponse extends \InterfaceWorker\Response {
     }
 
     protected function formatResult($result) {
-        $message = $result['data'];
-        if($result['st']!==200){
-            $message['error']['error_code'] = $result['error_code'];
-            $message['error']['error_message'] = $result['error_msg'];
+        $message = null;
+        switch($result['st']) {
+            case 200:
+                $message = $result['data'];
+                break;
+            case 204:
+                break;
+            default:
+                $message = array(
+                    'error_code' => $result['error_code'],
+                    'error_message' => $result['error_msg']
+                );
+                break;
         }
-
         return $message;
     }
 
@@ -70,6 +78,14 @@ class WebSocketResponse extends \InterfaceWorker\Response {
         );
     }
 
+    /**
+     * 无需发送返回消息时设置204
+     * @return array
+     */
+    public function ST_NO_ACK() {
+        $this->setSt(204);
+        return null;
+    }
 
     /** ------------------ 结果输出 ------------------ **/
 
